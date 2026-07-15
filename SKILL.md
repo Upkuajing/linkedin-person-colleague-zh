@@ -1,5 +1,5 @@
 ---
-name: linkedin-person-colleague
+name: linkedin-person-colleague-zh
 description: 从LinkedIn数据中查询同事列表（colleague list），通过企业ID（pid）和人员ID（hid）获取同事的人员ID和职位信息，支持游标分页。需要先通过linkedin-person-search技能获取pid和hid。
 metadata: {"version":"1.0.1","homepage":"https://www.upkuajing.com","clawdbot":{"emoji":"🤝","requires":{"bins":["python"],"env":["UPKUAJING_API_KEY"]},"primaryEnv":"UPKUAJING_API_KEY"}}
 ---
