@@ -1,7 +1,7 @@
 ---
 name: linkedin-person-colleague-zh
 description: 依托 LinkedIn 数据，结合人员与企业信息检索同事和团队成员清单，梳理企业内部人际关联与组织架构，发掘可对接的潜在商务联系人。
-metadata: {"version":"1.0.1","homepage":"https://www.upkuajing.com","clawdbot":{"emoji":"🤝","requires":{"bins":["python"],"env":["UPKUAJING_API_KEY"]},"primaryEnv":"UPKUAJING_API_KEY"}}
+metadata: {"version":"1.0.4","homepage":"https://www.upkuajing.com","clawdbot":{"emoji":"🤝","requires":{"bins":["python"],"env":["UPKUAJING_API_KEY"]},"primaryEnv":"UPKUAJING_API_KEY"}}
 ---
 
 # 领英同事查询
