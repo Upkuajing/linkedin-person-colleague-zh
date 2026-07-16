@@ -1,154 +1,155 @@
 ---
 name: linkedin-person-colleague-zh
-description: 从LinkedIn数据中查询同事列表（colleague list），通过企业ID（pid）和人员ID（hid）获取同事的人员ID和职位信息，支持游标分页。需要先通过linkedin-person-search技能获取pid和hid。
-metadata: {"version":"1.0.3","homepage":"https://www.upkuajing.com","clawdbot":{"emoji":"🤝","requires":{"bins":["python"],"env":["UPKUAJING_API_KEY"]},"primaryEnv":"UPKUAJING_API_KEY"}}
+description: 依托 LinkedIn 数据，结合人员与企业信息检索同事和团队成员清单，梳理企业内部人际关联与组织架构，发掘可对接的潜在商务联系人。
+metadata: {"version":"1.0.1","homepage":"https://www.upkuajing.com","clawdbot":{"emoji":"🤝","requires":{"bins":["python"],"env":["UPKUAJING_API_KEY"]},"primaryEnv":"UPKUAJING_API_KEY"}}
 ---
 
-# LinkedIn Person Colleague Query
+# 领英同事查询
 
-Query colleague data from LinkedIn using the UpKuaJing Open Platform API.
+使用跨境魔方开放平台API从领英数据查询人物的同事信息。
 
-## Overview
+## 概述
 
-This skill provides access to colleague information from UpKuaJing's LinkedIn data. Given a company ID (pid) and a person ID (hid), it returns the list of colleagues with their person IDs and job titles.
+本技能提供对跨境魔方领英同事信息的查询。通过公司ID（pid）和人物ID（hid）获取同事列表，包含人物ID和职位名称。
 
-**Prerequisite**: Both the company ID (pid) and person ID (hid) are required as input. If the user does not already have them, use the **linkedin-person-search** skill first to search for the target person and obtain their pid and hid, then proceed with this skill.
+**前置条件**：需要传入公司ID（pid）和人物ID（hid）作为参数。如果用户没有这些信息，应先使用 **linkedin-person-search** 技能搜索目标人物获取pid和hid，再使用本技能。
 
-## Running Scripts
+## 脚本运行
 
-### Environment Setup
+### 环境准备
 
-1. **Check Python**: `python --version`
-2. **Install dependencies**: `pip install -r requirements.txt`
+1. **检查 Python**：`python --version`
+2. **安装依赖**：`pip install -r requirements.txt`
 
-Script directory: `scripts/*.py`
-Run example: `python scripts/*.py`
+脚本目录：`scripts/*.py`
+运行示例：`python scripts/*.py`
 
-**Important**: Always use direct script invocation like `python scripts/linkedin_person_colleague_list.py`. **Do NOT use** shell compound commands like `cd scripts && python linkedin_person_colleague_list.py`
+**重要**：始终使用直接脚本调用，如 `python scripts/linkedin_person_colleague_list.py`。**不要使用** shell 复合命令如 `cd scripts && python linkedin_person_colleague_list.py`
 
-### Colleague List Query (`linkedin_person_colleague_list.py`)
-- **Return granularity**: Each colleague as one record
-- **Use cases**: Find colleagues of a specific person at a company
-- **Examples**:
-  - "Find colleagues of person H_67890 at company US_12345"
-  - "Get more colleagues using the next page cursor"
-- **Parameters**: See [Colleague List API](references/linkedin-person-colleague-list-api.md)
+### 同事列表查询 (`linkedin_person_colleague_list.py`)
+- **返回粒度**：每条同事记录为一行
+- **适用场景**：查询指定人员在指定公司的同事
+- **示例**：
+  - "查询H_67890在US_12345公司的同事"
+  - "获取下一页同事数据"
+- **参数**：查看参数说明 [同事列表 API](references/linkedin-person-colleague-list-api.md)
 
-## API Key and Top-up
-
-This skill requires an API key. The API key is stored in the `~/.upkuajing/.env` file:
+## API密钥与充值
+使用此技能需要API密钥。API密钥保存在 `~/.upkuajing/.env` 文件中：
 ```bash
 cat ~/.upkuajing/.env
 ```
-**Example file content**:
+**文件内容示例**：
 ```
 UPKUAJING_API_KEY=your_api_key_here
 ```
-### **API Key Not Set**
-First check if the `~/.upkuajing/.env` file has UPKUAJING_API_KEY;
-If UPKUAJING_API_KEY is not set, prompt the user to choose:
-1. User has one: User provides it (manually add to ~/.upkuajing/.env file)
-2. User doesn't have one: You can apply using the interface (`auth.py --new_key`), the new key will be automatically saved to ~/.upkuajing/.env
-Wait for user selection;
+### **未设置API密钥**
+请先检查 `~/.upkuajing/.env` 文件是否有 UPKUAJING_API_KEY;
+如果未设置 UPKUAJING_API_KEY API密钥，请提示并让用户选择：
+1. 用户有，由用户提供(手动添加到 ~/.upkuajing/.env 文件)
+2. 用户没有，你可使用接口进行申请（`auth.py --new_key`），申请到新密钥后，会自动保存到 ~/.upkuajing/.env
+等待用户选择；
 
-### **Account Top-up**
-When API response indicates insufficient balance, explain and guide user to top up:
-1. Create top-up order (`auth.py --new_rec_order`)
-2. Based on order response, send payment page URL to user, guide user to open URL and pay, user confirms after successful payment;
+### **账户充值**
+如果调用接口响应账户余额不足时，需说明并引导用户进行账户充值：
+1. 创建充值订单（`auth.py --new_rec_order`）
+2. 根据订单响应，发送支付页面URL给用户，引导用户打开地址付款，付款成功后告诉你；
 
-### **Get Account Information**
-Use this script to get account information for UPKUAJING_API_KEY: `auth.py --account_info`
+### **获取账户信息**
+可通过此脚本，获取UPKUAJING_API_KEY对应的账户信息 `auth.py --account_info`
 
-## API Key and UpKuaJing Account
-- Newly applied API key: Register and login at [UpKuaJing Open Platform](https://developer.upkuajing.com/), then bind account
+## API密钥与跨境魔方账号
+- 新申请的API密钥：在[跨境魔方开放平台](https://developer.upkuajing.com/)注册、登录后进行账号绑定
 
-## Fees
+## 费用
 
-**All API calls incur fees**, different interfaces have different billing methods.
+**所有API调用都会产生费用**，不同接口计费方式不同。
 
-**Latest pricing**: Users can visit [Detailed Price Description](https://www.upkuajing.com/web/openapi/price.html)
-Or use: `python scripts/auth.py --price_info` (returns complete pricing for all interfaces)
+**最新价格**：用户可访问 [详细价格说明](https://www.upkuajing.com/web/openapi/price.html)
+或者使用：`python scripts/auth.py --price_info`（返回接口完整定价）
 
-### Query Billing Rules
+### 查询计费规则
 
-Billed by **number of calls**, each call returns one page of colleague records:
-- Each API call incurs a fee
-- Use `--cursor` to get additional pages (each page is a separate call)
-- **Before execution:**
-  1. Inform user that this query will incur a fee
-  2. Stop, wait for explicit user confirmation in a separate message, then execute script
+按**调用次数**计费，每次返回一页同事记录：
+- 每次API调用产生一次费用
+- 使用 `--cursor` 获取更多页（每一页独立计费）
+- **执行前必须：**
+  1. 告知用户本次查询会产生费用
+  2. 停止，等待用户在独立消息中明确确认后，再执行脚本
 
-### Fee Confirmation Principle
+### 费用确认原则
 
-**Any operation that incurs fees must first inform and wait for explicit user confirmation. Do not execute in the same message as the notification.**
+**任何会产生费用的操作，都必须先告知、等待用户明确确认，不得在告知的同一条消息中直接执行。**
 
-## Workflow
+## 工作流程
 
-### Decision Guide
+### 决策指南
 
-| User Intent | Use API |
-|-------------|---------|
-| "Find colleagues of person H_67890 at company US_12345" | Colleague List Query |
-| User has a person/company name but no pid/hid | linkedin-person-search (find the person and get pid/hid, then use this skill) |
+| 用户意图 | 使用API |
+|---------|--------|
+| "查询H_67890在US_12345公司的同事" | 同事列表查询 |
+| 用户只有人物/公司名称，没有pid和hid | linkedin-person-search（先搜索人物获取pid和hid，再使用本技能） |
 
-## Usage Examples
+## 使用示例
 
-### Query Colleague List
+### 查询同事列表
 
-**User request**: "Find colleagues of person H_67890 at company US_12345"
+**用户请求**："查询H_67890在US_12345公司的同事"
 ```bash
 python scripts/linkedin_person_colleague_list.py --pid US_12345 --hid H_67890
 ```
 
-**Get next page** (use cursor returned from previous response):
+**获取下一页**（使用上一次响应返回的cursor）：
 ```bash
-python scripts/linkedin_person_colleague_list.py --pid US_12345 --hid H_67890 --cursor 'cursor_string_from_previous_response'
+python scripts/linkedin_person_colleague_list.py --pid US_12345 --hid H_67890 --cursor '上一次响应返回的cursor字符串'
 ```
 
-## Error Handling
+## 错误处理
 
-- **API key invalid/non-existent**: Check `UPKUAJING_API_KEY` in `~/.upkuajing/.env` file
-- **Insufficient balance**: Guide user to top up
-- **Invalid parameters**: **Must first check the corresponding API documentation in references/ directory**, get correct parameter names and formats from documentation, do not guess
+- **API密钥无效/不存在**：检查 `~/.upkuajing/.env` 文件中的 `UPKUAJING_API_KEY`
+- **余额不足**：引导用户充值
+- **参数无效**：**必须先查看 references/ 目录下的对应 API 文档**，从文档中获取正确的参数名称和格式，不要猜测
 
 ### API Documentation Reference
 
-- Colleague List: Check [references/linkedin-person-colleague-list-api.md](references/linkedin-person-colleague-list-api.md)
+- 同事列表：查看 [references/linkedin-person-colleague-list-api.md](references/linkedin-person-colleague-list-api.md)
 
-## Best Practices
+## 最佳实践
 
-1. **Check API documentation**:
-   - **Before executing queries, must first check the corresponding API reference documentation**
-   - Check [references/linkedin-person-colleague-list-api.md](references/linkedin-person-colleague-list-api.md)
-   - Do not guess parameter names, get accurate parameter names and formats from documentation
+1. **查看API文档**：
+   - **执行查询前，必须先查看对应的 API 参考文档**
+   - 查看 [references/linkedin-person-colleague-list-api.md](references/linkedin-person-colleague-list-api.md)
+   - 不要猜测参数名称，从文档中获取准确的参数名称和格式
 
-2. **Query parameters**:
-   - Both the company ID (pid) and person ID (hid) are required. If the user provides a person/company name instead, first use **linkedin-person-search** to find the target person and obtain their pid and hid.
+2. **查询参数**：
+   - 公司ID（pid）和人物ID（hid）均为必填参数。如果用户提供的是人物或公司名称而非pid和hid，应先使用 **linkedin-person-search** 搜索目标人物获取pid和hid。
 
-3. **Pagination**:
-   - When the response returns a non-empty `cursor`, more data is available
-   - Pass the `cursor` value to get the next page
-   - An empty `cursor` means there is no more data
+3. **分页查询**：
+   - 当响应返回非空的 `cursor` 时，表示还有更多数据
+   - 将 `cursor` 值传入即可获取下一页
+   - `cursor` 为空表示没有更多数据
 
-## Notes
-- Colleague records use `hid` as the person unique identifier; `pid` is the company identifier
-- `titleNames` is a list of job title strings for each colleague
-- File paths use forward slashes on all platforms
-- **Prohibit outputting technical parameter format**: Do not display code-style parameters in responses, convert to natural language
-- **Do not** estimate or guess per-call fees — use `python scripts/auth.py --price_info` to get accurate pricing information
-- **Do not** guess parameter names, get accurate parameter names and formats from documentation
+## 注意事项
+- 同事记录用 `hid` 作为人员唯一标识；`pid` 为公司标识
+- `titleNames` 是每位同事的职位名称列表
+- 文件路径在所有平台上都使用正斜杠
+- **禁止输出技术参数格式**：不要在回复中展示代码样式的参数，应将其转换为自然语言
+- **不要估算或猜测每次调用的费用** — 使用 `python scripts/auth.py --price_info` 获取准确定价信息
+- **不要**猜测参数名称，从文档中获取准确的参数名称和格式
 
-## Related Skills
+## 相关技能
 
-Other UpKuaJing skills you might find useful:
+其他您可能会用到的跨境魔方技能：
 
-- linkedin-person-search — Search people from LinkedIn data
-- linkedin-company-search — Search companies from LinkedIn data
-- global-company-person-colleague — Query colleague list from the global company database
-- linkedin-company-employee — Query employee list from LinkedIn data
-- linkedin-person-experience — Query work experience list from LinkedIn data
-- global-company-person-search — Search people from the global company database
-- upkuajing-global-company-people-search — Unified company and people search across all sources
-- upkuajing-contact-info-validity-check — Check contact info validity
-- upkuajing-email-tool — Email verification and sending tool
-- upkuajing-sms-tool — SMS tool
+- linkedin-person-search — 领英找人
+- linkedin-company-search — 领英找公司
+- global-company-person-colleague — 全球企业库同事查询
+- linkedin-company-employee — 领英员工查询
+- linkedin-person-experience — 领英工作经历查询
+- global-company-person-search — 全球企业库找人
+- upkuajing-global-company-people-search — 全来源统一的企业与人物搜索
+- upkuajing-contact-info-validity-check — 联系方式有效性检测
+- phone-validity-check — 电话号码有效性检测
+- email-validity-check — 邮箱地址有效性检测
+- domain-validity-check — 域名有效性检测- upkuajing-email-tool — 邮件验证与发送工具
+- upkuajing-sms-tool — 短信工具
